@@ -1,6 +1,7 @@
 import numpy as np
 import sqaod as sq
 from collections import OrderedDict
+import pandas as pd
 
 def solver(arr):
 	W = np.array(arr)
@@ -43,8 +44,9 @@ def solver(arr):
 	for idx in range(nToShow) :
 		out_summary.append(summary.xlist[idx])
 
+	
 	output.append(out_summary)
-	return output
+	return output, out_summary
 
 def _main():
 
@@ -63,13 +65,21 @@ def _main():
 				[ 0.22994935,  0.09681199, -0.37180498,  0.28154435],
 				[ 0.189515  ,  0.09499508,  0.28154435, -0.43036846]]]
 	ans_vec = []
-	
+	bool_vector = []
 	for array in arrays:
-		ans_vec.append(solver(array))
+		output, out_summary = solver(array)
+		ans_vec.append(output)
+		bool_vector.append(out_summary)
 		print("Done")
 
 	Save_Vec = np.array(ans_vec)
 	np.save('SqaodOutput.npy', Save_Vec)
+	df = pd.DataFrame(bool_vector)
+	df = df[0].apply(pd.Series).merge(df, left_index=True, right_index=True)
+	# df.drop([0], axis=1)
+	df.rename(index=str, columns={'0_x':'Q1', '1':'Q2', '2':'Q3', '3':'Q4'}, inplace=True)
+	df.drop(columns=['0_y'], inplace=True)
+	df.to_csv('Sqaod_Output.csv',index=False)
 
 if __name__ == '__main__':
 	_main()
