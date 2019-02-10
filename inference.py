@@ -77,7 +77,8 @@ def _main():
 	df = pd.DataFrame(bool_vector)
 	df = df[0].apply(pd.Series).merge(df, left_index=True, right_index=True)
 	# df.drop([0], axis=1)
-	df.rename(index=str, columns={'0_x':'Q1', '1':'Q2', '2':'Q3', '3':'Q4'}, inplace=True)
+	df.rename(index=str, columns={'0_x':'Q1'}, inplace=True)
+	df.rename(index=int, columns={1:'Q2', 2:'Q3', 3:'Q4'}, inplace=True)
 	df.drop(columns=['0_y'], inplace=True)
 	df.to_csv('Sqaod_Output.csv',index=False)
 
