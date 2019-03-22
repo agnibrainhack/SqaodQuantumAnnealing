@@ -4,7 +4,7 @@ from collections import OrderedDict
 import pandas as pd
 
 def solver(arr):
-	W = np.array(arr)
+	W = arr
 	output = []
 	sol = sq.cpu
 	if sq.is_cuda_available() :
@@ -53,37 +53,28 @@ def solver(arr):
 
 def _main():
 
-	arrays = [[[-0.53256123, -0.02734231,  0.21793854,  0.20448841],
-				[-0.02734231,  0.6694462 , -0.10512902, -0.08913602],
-				[ 0.21793854, -0.10512902, -0.69904254,  0.24068927],
-				[ 0.20448841, -0.08913602,  0.24068927, -0.70646382]], 
-
-				[[-0.53256123, -0.03986413,  0.2203466 ,  0.20860516],
-				[-0.03986413,  0.6694462 , -0.07585516, -0.06937777],
-				[ 0.2203466 , -0.07585516, -0.69904254,  0.23400084],
-				[ 0.20860516, -0.06937777,  0.23400084, -0.70646382]], 
-
-				[[-0.20677455,  0.09348978,  0.22994935,  0.189515],
-				[ 0.09348978,  0.99596267,  0.09681199,  0.09499508],
-				[ 0.22994935,  0.09681199, -0.37180498,  0.28154435],
-				[ 0.189515  ,  0.09499508,  0.28154435, -0.43036846]]]
+	data = pd.read_csv('Data/lymphography_mi_mRMR_qubo.csv')
+	data = data.drop(data.columns[0], axis=1)
+	arrays = data.values
+	# arrays = np.array(arrays)
 	ans_vec = []
 	bool_vector = []
-	for _ in range(100):
-		output, out_summary = solver(arrays[0])
-		ans_vec.append(output)
-		bool_vector.append(out_summary)
-		print("Done")
+	
+	output, out_summary = solver(arrays)
+	ans_vec.append(output)
+	bool_vector.append(out_summary)
+	print("Done")
 
 	Save_Vec = np.array(ans_vec)
-	np.save('SqaodOutput.npy', Save_Vec)
+	np.save('Answers/lymphography_mi_mRMR.npy', Save_Vec)
+	print(bool_vector)
 	df = pd.DataFrame(bool_vector)
 	df = df[0].apply(pd.Series).merge(df, left_index=True, right_index=True)
 	# df.drop([0], axis=1)
 	df.rename(index=str, columns={'0_x':'Q1'}, inplace=True)
-	df.rename(index=int, columns={1:'Q2', 2:'Q3', 3:'Q4'}, inplace=True)
+	df.rename(index=int, columns={1:'Q2', 2:'Q3', 3:'Q4', 4:'Q5', 5:'Q6', 6:'Q7', 7:'Q8', 8:'Q9'}, inplace=True)
 	df.drop(columns=['0_y'], inplace=True)
-	df.to_csv('Sqaod_Output.csv',index=False)
+	df.to_csv('Answers/lymphography_mi_mRMR.csv',index=False)
 
 if __name__ == '__main__':
 	_main()
