@@ -13,7 +13,7 @@ def solver(arr):
 
 	ann = sol.dense_graph_annealer()
 	ann.seed(1)
-	ann.set_qubo(W, sq.maximize)
+	ann.set_qubo(W, sq.minimize)
 	ann.set_preferences(n_trotters = W.shape[0])
 
 	h, J, c = ann.get_hamiltonian()
@@ -48,6 +48,9 @@ def solver(arr):
 	output.append(out_summary)
 	return output, out_summary
 
+
+
+
 def _main():
 
 	arrays = [[[-0.53256123, -0.02734231,  0.21793854,  0.20448841],
@@ -66,8 +69,8 @@ def _main():
 				[ 0.189515  ,  0.09499508,  0.28154435, -0.43036846]]]
 	ans_vec = []
 	bool_vector = []
-	for array in arrays:
-		output, out_summary = solver(array)
+	for _ in range(100):
+		output, out_summary = solver(arrays[0])
 		ans_vec.append(output)
 		bool_vector.append(out_summary)
 		print("Done")
