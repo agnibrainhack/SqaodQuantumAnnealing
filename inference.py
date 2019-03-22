@@ -13,7 +13,7 @@ def solver(arr):
 
 	ann = sol.dense_graph_annealer()
 	ann.seed(1)
-	ann.set_qubo(W, sq.maximize)
+	ann.set_qubo(W, sq.minimize)
 	ann.set_preferences(n_trotters = W.shape[0])
 
 	h, J, c = ann.get_hamiltonian()
