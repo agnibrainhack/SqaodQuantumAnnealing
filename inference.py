@@ -53,7 +53,7 @@ def solver(arr):
 
 def _main():
 
-	data = pd.read_csv('Data/lymphography_mi_mRMR_qubo.csv')
+	data = pd.read_csv('Data/wiscon_mi_mRMR_qubo.csv')
 	data = data.drop(data.columns[0], axis=1)
 	arrays = data.values
 	# arrays = np.array(arrays)
@@ -66,15 +66,15 @@ def _main():
 	print("Done")
 
 	Save_Vec = np.array(ans_vec)
-	np.save('Answers/lymphography_mi_mRMR.npy', Save_Vec)
+	np.save('Answer2/wiscon_mi_mRMR.npy', Save_Vec)
 	print(bool_vector)
 	df = pd.DataFrame(bool_vector)
 	df = df[0].apply(pd.Series).merge(df, left_index=True, right_index=True)
 	# df.drop([0], axis=1)
 	df.rename(index=str, columns={'0_x':'Q1'}, inplace=True)
-	df.rename(index=int, columns={1:'Q2', 2:'Q3', 3:'Q4', 4:'Q5', 5:'Q6', 6:'Q7', 7:'Q8', 8:'Q9'}, inplace=True)
+	df.rename(index=int, columns={1:'Q2', 2:'Q3', 3:'Q4', 4:'Q5', 5:'Q6', 6:'Q7'}, inplace=True)
 	df.drop(columns=['0_y'], inplace=True)
-	df.to_csv('Answers/lymphography_mi_mRMR.csv',index=False)
+	df.to_csv('Answer2/wiscon_mi_mRMR.csv',index=False)
 
 if __name__ == '__main__':
 	_main()
